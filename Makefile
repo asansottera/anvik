@@ -8,7 +8,7 @@ CUDA=/usr/local/cuda
 
 all: lib/anvik.a lib/anvik-gpu.a lib/anvik-sim.a lib/anvik-evaluator.a bin/anvik-run bin/anvik-run-paper-1
 
-lib/anvik.a: anvik/obj/comb_with_rep.o anvik/obj/examples.o anvik/obj/full_model.o anvik/obj/cpu_optimizer.o anvik/obj/problem.o anvik/obj/problem_io.o
+lib/anvik.a: dirs anvik/obj/comb_with_rep.o anvik/obj/examples.o anvik/obj/full_model.o anvik/obj/cpu_optimizer.o anvik/obj/problem.o anvik/obj/problem_io.o
 	ar rcs lib/anvik.a anvik/obj/comb_with_rep.o anvik/obj/examples.o anvik/obj/full_model.o anvik/obj/cpu_optimizer.o anvik/obj/problem.o anvik/obj/problem_io.o
 
 anvik/obj/comb_with_rep.o: anvik/comb_with_rep.cpp anvik/*.h
@@ -29,7 +29,7 @@ anvik/obj/problem.o: anvik/problem.cpp anvik/*.h
 anvik/obj/problem_io.o: anvik/problem_io.cpp anvik/*.h
 	$(CC) anvik/problem_io.cpp -o $@
 
-lib/anvik-gpu.a: lib/anvik.a anvik-gpu/obj/gpu_analysis.o anvik-gpu/obj/gpu_problem.o anvik-gpu/obj/gpu_optdata.o anvik-gpu/obj/gpu_optimize.o anvik-gpu/obj/gpu_reduction.o anvik-gpu/obj/gpu_optimizer.o
+lib/anvik-gpu.a: dirs lib/anvik.a anvik-gpu/obj/gpu_analysis.o anvik-gpu/obj/gpu_problem.o anvik-gpu/obj/gpu_optdata.o anvik-gpu/obj/gpu_optimize.o anvik-gpu/obj/gpu_reduction.o anvik-gpu/obj/gpu_optimizer.o
 	ar rcs lib/anvik-gpu.a\
 		anvik-gpu/obj/gpu_analysis.o\
 		anvik-gpu/obj/gpu_problem.o\
@@ -56,34 +56,48 @@ anvik-gpu/obj/gpu_reduction.o: anvik-gpu/gpu_reduction.cu anvik-gpu/*.h anvik/*.
 anvik-gpu/obj/gpu_optimizer.o: anvik-gpu/gpu_optimizer.cpp anvik-gpu/*.h anvik/*.h
 	$(CC) -Ianvik/ -I$(CUDA)/include anvik-gpu/gpu_optimizer.cpp -o $@
 
-bin/anvik-run: lib/anvik.a lib/anvik-gpu.a lib/anvik-evaluator.a anvik-run/obj/main.o
+bin/anvik-run: dirs lib/anvik.a lib/anvik-gpu.a lib/anvik-evaluator.a anvik-run/obj/main.o
 	$(LINK) -L$(CUDA)/lib64 -lcudart anvik-run/obj/main.o lib/anvik.a lib/anvik-gpu.a lib/anvik-evaluator.a lib/anvik-sim.a -o $@
 
 anvik-run/obj/main.o: anvik-run/main.cpp anvik/*.h anvik-gpu/*.h anvik-sim/*.h anvik-evaluator/*.h
 	$(CC) -Ianvik/ -Ianvik-gpu/ -Ianvik-sim/ -Ianvik-evaluator/ anvik-run/main.cpp -o $@
 
-bin/anvik-run-paper-1: lib/anvik.a lib/anvik-gpu.a lib/anvik-evaluator.a anvik-run-paper-1/obj/main.o
+bin/anvik-run-paper-1: dirs lib/anvik.a lib/anvik-gpu.a lib/anvik-evaluator.a anvik-run-paper-1/obj/main.o
 	$(LINK) -L$(CUDA)/lib64 -lcudart anvik-run-paper-1/obj/main.o lib/anvik.a lib/anvik-gpu.a lib/anvik-evaluator.a -o $@
 
 anvik-run-paper-1/obj/main.o: anvik-run-paper-1/main.cpp anvik/*.h anvik-gpu/*.h
 	$(CC) -Ianvik/ -Ianvik-gpu/ anvik-run-paper-1/main.cpp -o $@
 
-lib/anvik-sim.a: lib/anvik.a anvik-sim/obj/simulator.o
+lib/anvik-sim.a: dirs lib/anvik.a anvik-sim/obj/simulator.o
 	ar rcs lib/anvik-sim.a anvik-sim/obj/simulator.o
 
 anvik-sim/obj/simulator.o: anvik-sim/simulator.cpp anvik-sim/*.h anvik/*.h
 	$(CC) -Ianvik/ -Ianvik-sim/ anvik-sim/simulator.cpp -o $@
 
-lib/anvik-evaluator.a: lib/anvik.a anvik-evaluator/obj/evaluator.o
+lib/anvik-evaluator.a: dirs lib/anvik.a anvik-evaluator/obj/evaluator.o
 	ar rcs lib/anvik-evaluator.a anvik-evaluator/obj/evaluator.o
 
 anvik-evaluator/obj/evaluator.o: anvik-evaluator/evaluator.cpp anvik-evaluator/*.h anvik/*.h
 	$(CC) -Ianvik/ -I/opt/eigen-3_2_0 -Ianvik-evaluator/ anvik-evaluator/evaluator.cpp -o $@
 
+.PHONY: dirs clean
+
+dirs:
+	mkdir -p anvik/obj
+	mkdir -p anvik-gpu/obj
+	mkdir -p anvik-run/obj
+	mkdir -p anvik-run-paper-1/obj
+	mkdir -p anvik-sim/obj
+	mkdir -p anvik-evaluator/obj
+	mkdir -p bin
+	mkdir -p lib
+
 clean:
 	rm -f anvik/obj/*.o
 	rm -f anvik-gpu/obj/*.o
 	rm -f anvik-run/obj/*.o
+	rm -f anvik-run-paper-1/obj/*.o
 	rm -f anvik-sim/obj/*.o
+	rm -f anvik-evaluator/obj/*.o
 	rm -f bin/*
 	rm -f lib/*
