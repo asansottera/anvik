@@ -1,0 +1,13 @@
+k: 1
+m: 1
+r: 2
+n: [1]
+lambda: [0.5]
+mu: [1]
+cost: [1]
+revenue: [0]
+capacity: {[1, 1]}
+requirement: {[1, 1]}
+r_names: [Resource 1, Resource 2]
+s_names: [Servers 1]
+v_names: [Virtual Machines 1]
