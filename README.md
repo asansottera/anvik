@@ -22,6 +22,7 @@ A graphical user interface, written in C# and C++/CLI, is provided for Windows m
 
 Anvik is a joint work of <a href="http://home.deib.polimi.it/sansottera/">Andrea Sansottera</a> and <a href="http://home.deib.polimi.it/cremones/">Paolo Cremonesi</a>.
 If you use Anvik for your research, please cite the following paper, which will be presented at ValueTools 2013:
+
 Andrea Sansottera, Paolo Cremonesi,
 *Optimal Virtual Machine Allocation with Anvik*,
 [To appear] Conference on Performance Evaluation Methodologies and Tools (ValueTools), 2013
