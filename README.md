@@ -14,7 +14,7 @@ If this option is enabled, a joint allocation and admission control problem is s
 Two implementations of the solution algorithm are provided.
 The first version runs on CPUs, is written in C++ and uses OpenMP to exploits shared-memory parallel architectures.
 The second version runs on GPUs and is written in CUDA. 
-The GPU code has both a compute-optimized and a memory-optimized path, and
+The GPU code has both a compute-optimized path and a memory-optimized path, and
 automatically selects one of the two depending on the problem size and the available GPU memory.
 
 The command line version of the tool has been tested on both Linux and Windows machines.
