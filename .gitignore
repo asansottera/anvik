@@ -1,6 +1,4 @@
-*.sdf
-*.opensdf
-*.suo
+# Visual Studio output folders
 ipch
 x64
 [Dd]ebug
@@ -17,6 +15,7 @@ anvik-sim/x64
 anvik-evaluator/x64
 anvik-run-paper-1/x64
 
+# Linux output folders
 bin/
 lib
 anvik/obj
@@ -25,6 +24,12 @@ anvik-gpu/obj
 anvik-sim/obj
 anvik-evaluator/obj
 anvik-run-paper-1/obj
+
+# Visual Studio files
+*.sdf
+*.opensdf
+*.suo
+*.pdb
 
 # Compiled Object files
 *.slo
