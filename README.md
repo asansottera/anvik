@@ -26,4 +26,4 @@ If you use Anvik for your research, please cite the following paper, which will 
 Andrea Sansottera, Paolo Cremonesi,
 *Optimal Virtual Machine Allocation with Anvik*,
 [To appear] Conference on Performance Evaluation Methodologies and Tools (ValueTools), 2013
-<a href="http://home.deib.polimi.it/sansottera/bibtex/sansottera2013valuetools.bib">Bibtex</a>
+<a href="http://home.deib.polimi.it/sansottera/bibtex/sansottera2013anvik.bib">Bibtex</a>
