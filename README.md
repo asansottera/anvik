@@ -27,3 +27,8 @@ Andrea Sansottera, Paolo Cremonesi,
 *Optimal Virtual Machine Allocation with Anvik*,
 [To appear] Conference on Performance Evaluation Methodologies and Tools (ValueTools), 2013
 <a href="http://home.deib.polimi.it/sansottera/bibtex/sansottera2013anvik.bib">Bibtex</a>
+
+To compile the Linux version, you can use the provided Makefile.
+For Windows, we provide a solution file for Visual Studio 2013.
+An installation of the CUDA Toolkit is required on both Linux and Windows.
+An NVIDIA GPU, however, is not required to run the CPU version of the solver.
