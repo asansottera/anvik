@@ -1,7 +1,7 @@
 Anvik
 =====
 
-Anvik computes the optimal allocation policy for virtual machines.
+Anvik computes the optimal allocation and admission-control policy for virtual machines.
 This policy can later be used by an online allocator in Infrastructure-as-a-Service clouds.
 
 The problem is formulated as a Markov Decision Process.
@@ -24,7 +24,7 @@ Anvik is a joint work of <a href="http://home.deib.polimi.it/sansottera/">Andrea
 If you use Anvik for your research, please cite the following paper, which will be presented at ValueTools 2013:
 
 Andrea Sansottera, Paolo Cremonesi,
-*Optimal Virtual Machine Allocation with Anvik*,
+*Optimal Virtual Machine Scheduling with Anvik*,
 [To appear] Conference on Performance Evaluation Methodologies and Tools (ValueTools), 2013
 <a href="http://home.deib.polimi.it/sansottera/bibtex/sansottera2013anvik.bib">Bibtex</a>
 
