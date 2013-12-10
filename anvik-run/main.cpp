@@ -85,10 +85,20 @@ void simulate(const std::string & problem_file, const std::string & policy_file)
 #define ANVIK_RUN_INVALID_COMMAND 2
 #define ANVIK_RUN_ERROR 3
 
+void print_available_commands(std::ostream & dst) {
+	dst << "Available commands: " << std::endl;
+	dst << " - optimize-cpu		computes the optimal policy using the CPUs" << std::endl;
+	dst << " - optimize-gpu     computes the optimal policy using the GPU" << std::endl;
+	dst << " - evaluate			evaluates the expected profit under the given policy analytically" << std::endl;
+	dst << " - simulate			evaluates the expected profit under the given policy through simulation" << std::endl;
+}
+
 int main(int argc, char ** argv) {
 
 	if (argc != 4) {
 		std::cerr << "Invalid number of arguments" << std::endl;
+		std::cerr << "Syntax: anvik-run command problem_file policy_file" << std::endl;
+		print_available_commands(std::cerr);
 		return ANVIK_RUN_INVALID_NUMBER_OF_ARGUMENTS;
 	}
 
@@ -108,6 +118,7 @@ int main(int argc, char ** argv) {
 			simulate(problem_file, policy_file);
 		} else {
 			std::cerr << "Invalid commmand '" << cmd << "'" << std::endl;
+			print_available_commands(std::cerr);
 			return ANVIK_RUN_INVALID_COMMAND;
 		}
 
