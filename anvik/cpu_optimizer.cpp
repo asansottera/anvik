@@ -105,11 +105,12 @@ void cpu_optimizer<TFloat>::optimize(const full_model & fm) {
 				}
 			}
 		}
-	}
-	if (iteration % 2 == 0) {
-		objective = via_w_1[0];
-	} else {
-		objective = via_w_2[0];
+		if (iteration % 2 == 0) {
+			objective = via_w_1[0];
+		} else {
+			objective = via_w_2[0];
+		}
+		std::cout << "Iteration " << iteration << ": delta = " << delta << ", objective = " << objective << std::endl;
 	}
 	// release memory
 	via_w_1.clear();
