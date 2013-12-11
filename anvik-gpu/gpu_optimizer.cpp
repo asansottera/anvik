@@ -12,7 +12,7 @@
 #include "gpu_optdata.h"
 #include "gpu_optimize.h"
 
-//#define FIXED_BATCH_SIZE 48*1024
+// #define FIXED_BATCH_SIZE 48*1024
 
 struct worker {
 	std::thread thread;
@@ -55,7 +55,9 @@ void gpu_optimizer::optimize(const full_model & fm) {
 	}
     #if defined FIXED_BATCH_SIZE
     uint64_t state_batch_size = FIXED_BATCH_SIZE;
-    std::cout << "Using fixed batch size: " << state_batch_size << std::endl;
+    uint64_t required_byte = go.estimate_memory(p, fm, state_batch_size);
+    std::cout << "Using fixed batch size: " << state_batch_size << " ";
+    std::cout << "(" << (required_byte / (1024*1024)) << " MB required)" << std::endl;
     #else
 	uint64_t state_batch_size = fm.get_system_states();
 	size_t free_byte, total_byte;
