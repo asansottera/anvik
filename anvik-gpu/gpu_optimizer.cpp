@@ -99,6 +99,7 @@ void gpu_optimizer::optimize(const full_model & fm) {
 		gpu_optimize_iteration(
 			ignore_revenue, always_allow_reject, check_strict_convergence,
 			w->iteration, cost, delta);
+		std::cout << "Iteration " << w->iteration << ": delta = " << delta << ", objective = " << cost << std::endl;
 	}
 	// save solution
 	objective = cost;
