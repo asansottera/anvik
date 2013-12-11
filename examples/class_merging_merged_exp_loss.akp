@@ -1,0 +1,13 @@
+k: 1
+m: 2
+r: 3
+n: [10]
+lambda: [5, 2]
+mu: [4.4, 4]
+cost: [4]
+revenue: [2.625, 6]
+capacity: {[16, 32, 1000]}
+requirement: {[8, 16, 500]; [16, 32, 1000]}
+r_names: [CPU (cores), RAM (GB), Network (Mbit/s)]
+s_names: [Servers]
+v_names: [Small-Medium, Exclusive]
