@@ -44,3 +44,10 @@ anvik-run-paper-1/obj
 *.lai
 *.la
 *.a
+
+# Solution files
+*.aks
+
+# Log files
+log
+*.log
