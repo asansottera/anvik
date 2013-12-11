@@ -1,0 +1,13 @@
+k: 2
+m: 2
+r: 2
+n: [4, 2]
+lambda: [1, 0.5]
+mu: [4, 2]
+cost: [1, 3]
+revenue: [3, 2]
+capacity: {[6, 12]; [12, 16]}
+requirement: {[4, 4]; [2, 8]}
+r_names: [CPU Cores, RAM (GB)]
+s_names: [Single Socket, Dual Socket]
+v_names: [Compute Intensive, Memory Intensive]
