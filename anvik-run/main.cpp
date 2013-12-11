@@ -18,7 +18,7 @@
 #include "simulator.h"
 #include "evaluator.h"
 
-void optimize(const std::string & problem_file, const std::string & policy_file, bool use_gpu = true) {
+void optimize(const std::string & problem_file, const std::string & policy_file, bool use_gpu = true, bool allow_reject = false) {
 	// load problem
 	problem p = load_problem(problem_file);
 	// write problem to command line
@@ -36,7 +36,7 @@ void optimize(const std::string & problem_file, const std::string & policy_file,
 		opt.reset( new gpu_optimizer() );
 	}
 	opt->set_ignore_revenue(false);
-	opt->set_always_allow_reject(false);
+	opt->set_always_allow_reject(allow_reject);
 	opt->set_check_strict_convergence(true);
 	opt->optimize(fm);
 	// save policy
@@ -95,23 +95,28 @@ void print_available_commands(std::ostream & dst) {
 
 int main(int argc, char ** argv) {
 
-	if (argc != 4) {
+	if (argc < 4 || argc > 5) {
 		std::cerr << "Invalid number of arguments" << std::endl;
-		std::cerr << "Syntax: anvik-run command problem_file policy_file" << std::endl;
+		std::cerr << "Syntax: anvik-run command [admission_control] problem_file policy_file" << std::endl;
 		print_available_commands(std::cerr);
 		return ANVIK_RUN_INVALID_NUMBER_OF_ARGUMENTS;
 	}
 
-	std::string cmd = argv[1];
-	std::string problem_file = argv[2];
-	std::string policy_file = argv[3];
+    int argi = 1;
+	std::string cmd = argv[argi++];
+    bool admission_control = false;
+    if (argc == 5) {
+        admission_control = strtoul(argv[argi++], NULL, 10) > 0;
+    }
+	std::string problem_file = argv[argi++];
+	std::string policy_file = argv[argi++];
 
 	try {
 
 		if (cmd == "optimize-cpu") {
-			optimize(problem_file, policy_file, false);
+			optimize(problem_file, policy_file, false, admission_control);
 		} else if (cmd == "optimize-gpu") {
-			optimize(problem_file, policy_file, true);
+			optimize(problem_file, policy_file, true, admission_control);
 		} else if (cmd == "evaluate") {
 			evaluate(problem_file, policy_file);
 		} else if (cmd == "simulate") {
