@@ -1,6 +1,8 @@
 Anvik
 =====
 
+[Current release: v1.0](https://github.com/asansottera/anvik/releases/tag/v1.0)
+
 Anvik computes the optimal allocation and admission-control policy for virtual machines.
 This policy can later be used by an online allocator in Infrastructure-as-a-Service clouds.
 
