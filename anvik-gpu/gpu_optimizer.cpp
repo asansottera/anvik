@@ -60,31 +60,48 @@ void gpu_optimizer::optimize(const full_model & fm) {
     std::cout << "(" << (required_byte / (1024*1024)) << " MB required)" << std::endl;
     #else
 	uint64_t state_batch_size = fm.get_system_states();
+    // get available amount of video memory
 	size_t free_byte, total_byte;
 	cudaError_t err = cudaMemGetInfo( &free_byte, &total_byte );
-	if (err == cudaSuccess) {
-		uint64_t required_byte = go.estimate_memory(p, fm, state_batch_size);
-		// take into account a 10% overhead
-		while ((required_byte * 11 / 10) > free_byte)  {
-			std::cout << "Batch size of " << state_batch_size << " requires ";
-			std::cout << (required_byte / (1024*1024)) << " MB, ";
-			std::cout << "but only " << (free_byte / (1024*1024)) << " MB are available" << std::endl;
-			state_batch_size /= 2;
-			required_byte = go.estimate_memory(p, fm, state_batch_size);
-		}
-		if (state_batch_size < fm.get_system_states()) {
-			std::cout << "Using batched algorithm with batch size " << state_batch_size;
-		} else {
-			std::cout << "Using non-batched algorithm";
-		}
-		std::cout << " (" << (required_byte / (1024*1024)) << " MB required)" << std::endl;
-	} else {
+	if (err != cudaSuccess) {
 		throw std::runtime_error("Unable to query available GPU memory");
-	}
+    }
+    // tolerance of 100 MB
+    static const uint64_t tol_byte = 100*1024*1024;
+    // check if the memory is enough to store the vectors
+    // whose size does not depend on the batch size
+    uint64_t min_required_byte = go.estimate_memory(p, fm, 0);
+    if (min_required_byte + tol_byte >= free_byte) {
+        std::stringstream msg;
+        msg << "GPU algorithms require at least ";
+        msg << min_required_byte / (1024*1024) << " MB, ";
+        msg << "but only " << free_byte / (1024*1024) << " MB ";
+        msg << "are available";
+        throw std::runtime_error(msg.str());
+    }
+    // compute largest batch size that fits in memory
+    uint64_t required_byte = go.estimate_memory(p, fm, state_batch_size);
+    while (required_byte + tol_byte >= free_byte)  {
+        std::cout << "Batch size " << state_batch_size << " requires ";
+        std::cout << (required_byte / (1024*1024)) << " MB, ";
+        std::cout << "but only " << (free_byte / (1024*1024)) << " MB ";
+        std::cout << "are available" << std::endl;
+        state_batch_size /= 2;
+        required_byte = go.estimate_memory(p, fm, state_batch_size);
+    }
+    if (state_batch_size < fm.get_system_states()) {
+        std::cout << "Using batched algorithm with batch size ";
+        std::cout << state_batch_size;
+    } else {
+        std::cout << "Using non-batched algorithm";
+    }
+    std::cout << " (" << (required_byte / (1024*1024)) << " MB required)";
+    std::cout << std::endl;
     #endif
-	if (!go.init(p, fm, state_batch_size)) {
-		throw std::runtime_error("Failure when trying to allocate and initialize gpu_optdata");
-	}
+    // allocate optimizer data
+    if (!go.init(p, fm, state_batch_size)) {
+        throw std::runtime_error("Failure when trying to allocate and initialize gpu_optdata");
+    }
 	// start timing
 	std::chrono::high_resolution_clock::time_point start, end;
 	start = std::chrono::high_resolution_clock::now();

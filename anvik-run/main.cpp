@@ -87,10 +87,10 @@ void simulate(const std::string & problem_file, const std::string & policy_file)
 
 void print_available_commands(std::ostream & dst) {
 	dst << "Available commands: " << std::endl;
-	dst << " - optimize-cpu		computes the optimal policy using the CPUs" << std::endl;
-	dst << " - optimize-gpu     computes the optimal policy using the GPU" << std::endl;
-	dst << " - evaluate			evaluates the expected profit under the given policy analytically" << std::endl;
-	dst << " - simulate			evaluates the expected profit under the given policy through simulation" << std::endl;
+	dst << " - optimize-cpu	 computes the optimal policy using the CPUs" << std::endl;
+	dst << " - optimize-gpu  computes the optimal policy using the GPU" << std::endl;
+	dst << " - evaluate      evaluates the expected profit under the given policy analytically" << std::endl;
+	dst << " - simulate      evaluates the expected profit under the given policy through simulation" << std::endl;
 }
 
 int main(int argc, char ** argv) {
